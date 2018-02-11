@@ -1,14 +1,16 @@
-import React from 'react'
-import Form from './Form'
-import Button from './Button'
-
+import React          from 'react'
+import Form           from './Form'
+import Button         from './Button'
+import PermissionsApi from './PermissionsApi'
 
 class ProductsList extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      items: props.items
+      items: props.items,
+      // by default nothing is allowed as actions
+      permissions: this.props.permissions
     }
   }
 
@@ -44,14 +46,37 @@ class ProductsList extends React.Component {
     this.setState({items})
   }
 
-  renderForm({item, submitButtonValue, onSubmitClick}) {
-    return <Form item={item} submitButtonValue={submitButtonValue} onSubmitClick={onSubmitClick} />
-    // return <Form  submitButtonValue="Add" onSubmitClick={() => {}} />
+  renderForm({item, action, submitButtonValue, onSubmitClick}) {
+    if (action === undefined) {
+      throw Error(`Please provide action to renderForm function`)
+    }
+
+    if (this.state.permissions.includes(action)) {
+      return <Form item={item} submitButtonValue={submitButtonValue} onSubmitClick={onSubmitClick} />
+    } else {
+      return ''
+    }
+  }
+
+  renderButton({action, label, onPermissionGranted}) {
+    if (this.state.permissions.includes(action)) {
+      return <Button
+              action={action}
+              label={label}
+              onPermissionGranted={onPermissionGranted}
+              />
+    } else {
+      return ''
+    }
   }
 
   render() {
-    let items = this.state.items.map((x, i) => {
+    console.log('state permissions:', this.state.permissions)
+    if (!this.state.permissions.includes('read')) {
+      return 'You have no permissions to view this feature'
+    }
 
+    let items = this.state.items.map((x, i) => {
       let itemContent = null
       if (!x.isEditing) {
         itemContent = (
@@ -60,19 +85,19 @@ class ProductsList extends React.Component {
             <td>{x.price}</td>
             <td>{x.currency}</td>
             <td>
-              <Button
-                action="edit"
-                label="Edit"
-                onPermissionGranted={this.markItemForEditting.bind(this, i)}
-              />
+              {this.renderButton({
+                action: 'update',
+                label: 'Edit',
+                onPermissionGranted: this.markItemForEditting.bind(this, i)
+              })}
             </td>
 
             <td>
-              <Button
-                action="remove"
-                label="Remove"
-                onPermissionGranted={this.removeItem.bind(this, i)}
-              />
+              {this.renderButton({
+                action: 'delete',
+                label: 'Remove',
+                onPermissionGranted: this.removeItem.bind(this, i)
+              })}
             </td>
           </tr>
         )
@@ -81,6 +106,8 @@ class ProductsList extends React.Component {
           <td colSpan="5">
             {this.renderForm({
               submitButtonValue: 'Save',
+              // use this action to check if the form is allowed to be shown
+              action: 'update',
               // this will let the form know what is the default data to render
               // in the fields.
               item: x,
@@ -121,6 +148,7 @@ class ProductsList extends React.Component {
         </table>
         <div>
           {this.renderForm({
+            action: 'create',
             submitButtonValue: 'Add',
             onSubmitClick: (item) => {
               this.addItem(item);

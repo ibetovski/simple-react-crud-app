@@ -1,13 +1,5 @@
 import React from 'react'
-
-// mock the fetch API
-let oldFetchApi = fetch
-
-fetch = function(url) {
-  // the fetch API is a promise, so we should implement the same functionality
-  // but since we have to mock it as successfull we could just return promise.resolve()
-  return Promise.resolve({ok: 1})
-}
+import PermissionsApi from './PermissionsApi'
 
 class Button extends React.Component {
   constructor(props) {
@@ -15,11 +7,9 @@ class Button extends React.Component {
   }
 
   getPermission(action) {
-    return fetch(`/check-action-permission/${action}`)
-    .then((data) => {
-      if (data.ok === 1) {
-        console.log(`Permission granted for ${action} action`)
-      }
+    return PermissionsApi.isAllowed(action)
+    .then(isAllowed => {
+      console.log(`Permission granted for ${action} action`)  
     })
   }
 
@@ -32,6 +22,7 @@ class Button extends React.Component {
         })
       }}>{this.props.label}</a>
     )
+   
   }
 }
 
