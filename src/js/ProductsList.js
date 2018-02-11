@@ -1,5 +1,6 @@
 import React from 'react'
 import Form from './Form'
+import Button from './Button'
 
 
 class ProductsList extends React.Component {
@@ -58,8 +59,21 @@ class ProductsList extends React.Component {
             <td>{x.name}</td>
             <td>{x.price}</td>
             <td>{x.currency}</td>
-            <td><a href="#" onClick={this.markItemForEditting.bind(this, i)}>edit</a></td>
-            <td><a href="#" onClick={this.removeItem.bind(this, i)}>remove</a></td>
+            <td>
+              <Button
+                action="edit"
+                label="Edit"
+                onPermissionGranted={this.markItemForEditting.bind(this, i)}
+              />
+            </td>
+
+            <td>
+              <Button
+                action="remove"
+                label="Remove"
+                onPermissionGranted={this.removeItem.bind(this, i)}
+              />
+            </td>
           </tr>
         )
       } else {
