@@ -2,7 +2,7 @@ import permissions from '../data/permissions.json'
 
 // If set to true will pick on random value for setTimeout simulating a low internet
 // connection. Max value is 3 seconds.
-const SIMULATE_LOW_CONNECTION = true
+const SIMULATE_LOW_CONNECTION = false
 
 const getTimeoutValue = () => {
   if (SIMULATE_LOW_CONNECTION) {
