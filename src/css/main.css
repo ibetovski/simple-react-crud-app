@@ -1,0 +1,75 @@
+body {
+  font-family: Arial, serif;
+  font-size: 16px;
+  background: #e6f7ff;
+}
+
+div#root {
+  width:  500px;
+  margin: 0 auto;
+  color: #006699;
+}
+
+table,
+form {
+  width: 100%;
+}
+
+table tbody tr {
+  background: #66ccff;
+}
+
+table thead {
+  background: #0077b3;
+  color: white;
+}
+
+th {
+  font-weight: normal;
+}
+
+table td {
+  padding: 5px;
+}
+
+.form {
+  background: #b3e6ff;
+  padding:  20px;
+}
+
+.form div {
+  margin-bottom: 3px;
+}
+
+.form label {
+  display:  inline-block;
+  min-width:  100px;
+}
+
+table,
+form {
+  box-sizing: border-box;
+}
+
+a, button {
+  background: #0077b3;
+  display: block;
+  border-radius: 8px;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  font-size:  12px;
+  padding:  3px 0;
+  cursor: pointer;
+  transition: background .5s;
+}
+
+a:hover,
+button:hover {
+  background: #004466;
+}
+
+button {
+  border: 0;
+  padding:  3px 10px;
+}

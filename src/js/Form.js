@@ -58,7 +58,7 @@ class Form extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="form">
         {this.renderField({label: 'Name',     key: 'name'})}
         {this.renderField({label: 'Price',    key: 'price'})}
         {this.renderField({label: 'Currency', key: 'currency'})}

@@ -80,14 +80,15 @@ class ProductsList extends React.Component {
       let itemContent = null
       if (!x.isEditing) {
         itemContent = (
-          <tr>
+          <tr key={x.name}>
+            <td>{i + 1}.</td>
             <td>{x.name}</td>
             <td>{x.price}</td>
             <td>{x.currency}</td>
             <td>
               {this.renderButton({
                 action: 'update',
-                label: 'Edit',
+                label:  'Edit',
                 onPermissionGranted: this.markItemForEditting.bind(this, i)
               })}
             </td>
@@ -95,7 +96,7 @@ class ProductsList extends React.Component {
             <td>
               {this.renderButton({
                 action: 'delete',
-                label: 'Remove',
+                label:  'Remove',
                 onPermissionGranted: this.removeItem.bind(this, i)
               })}
             </td>
@@ -103,38 +104,39 @@ class ProductsList extends React.Component {
         )
       } else {
         itemContent = (
-          <td colSpan="5">
-            {this.renderForm({
-              submitButtonValue: 'Save',
-              // use this action to check if the form is allowed to be shown
-              action: 'update',
-              // this will let the form know what is the default data to render
-              // in the fields.
-              item: x,
-              onSubmitClick: (item) => {
-                console.log('item:', item, i)
-                // we don't just have to update the item but we should know which item
-                // to update.
-                // That's why we need the index too.
-                this.updateItem(item, i);
-              }
-             })}
-          </td>
+          <tr key={x.name}>
+            <td colSpan="6">
+              {this.renderForm({
+                submitButtonValue: 'Save',
+                // use this action to check if the form is allowed to be shown
+                action: 'update',
+                // this will let the form know what is the default data to render
+                // in the fields.
+                item: x,
+                onSubmitClick: (item) => {
+                  console.log('item:', item, i)
+                  // we don't just have to update the item but we should know which item
+                  // to update.
+                  // That's why we need the index too.
+                  this.updateItem(item, i);
+                }
+               })}
+            </td>
+          </tr>
         )
       }
 
       return (
-        <tr key={x.name}>
-          {itemContent}
-        </tr>
+        itemContent
       )
     })
 
     return (
       <div>
-        <table>
+        <table cellPadding="0" cellSpacing="0">
           <thead>
             <tr>
+              <th>&nbsp;</th>
               <th>name</th>
               <th>price</th>
               <th>currency</th>
